@@ -1,6 +1,5 @@
 #inventory.py
 
-from webbrowser import get
 from Database.db import sqlSafeQuery, sqlQuery
 
 def getItem(pid:int, itemId:int, isPlane:bool=0) -> int:
