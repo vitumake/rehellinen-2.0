@@ -201,8 +201,8 @@ class Player():
         
     def incHealth(self, val:int):
         self.health += val
-        if self.health < 0: self.healht = 0
-        elif self.healht > self.plane.max_health: self.healht = self.plane.max_health
+        if self.health < 0: self.health = 0
+        elif self.health > self.plane.max_health: self.health = self.plane.max_health
         self.update()
     
     def setActivePlane(self, pid:int):
