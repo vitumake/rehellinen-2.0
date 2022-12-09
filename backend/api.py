@@ -5,12 +5,14 @@ PYTHONHASHSEED = 0.69
 
 from datetime import datetime
 import hashlib
-
+import inspect
 from db import sqlSafeQuery
 from classes import Player, Cargo, Plane, Airport, Quest
 from flask import json, Flask, request, session, redirect, url_for
 
-def Response(status:int, content:object=None):
+def Response(status:int, content=None):
+    if content==None:
+        if status==400: content='Bad request'
     return json.dumps({
         'status': status,
         'content': content
@@ -40,7 +42,7 @@ def login():
         }, 1)
         if login:
             session['uid'] = login
-            redirect(url_for('user'))          
+            return redirect(url_for('user'))          
         else: return Response(400, 'User not found')
     else: return Response(400, 'Already logged in')
 
@@ -48,16 +50,30 @@ def login():
 def logout():
     if 'uid' in session:
         session.pop('uid', None)
-        redirect(url_for('/user'))
+        return redirect(url_for('/user'))
     else:
-        return Response(404, 'Not logged in')
+        return Response(400, 'Not logged in')
 
-#User and 
+#User and methods
 @reh.route('/user')
-def user():   
-    if 'uid' in session:
-        return Response(200, Player(session['uid'][0][0]))
-    else:
-        return Response(404, 'Not logged in')
+def user():
+    if not 'uid' in session:
+        return Response(400, 'Not logged in')
+    
+    pl = Player(session['uid'][0][0])
+    action = request.args.get('a')
+    val = request.args.get('val')
+    
+    #Call specified method if it exists
+    if hasattr(pl, action) and not val==None:
+        val = float(val) if val.lstrip('-+.').isdigit() else 0
+        getattr(pl, action)(val)
+    #If value is not none print error
+    elif not val==None:
+        return Response(400)
+
+    #By default user returns player object
+    return Response(200, pl)
+    
 if __name__ == '__main__':
     reh.run(use_reloader=True, host='127.0.0.1', port=3000)
