@@ -21,18 +21,19 @@ conn = mysql.connector.connect(
 
 kursori = conn.cursor(buffered=True)
 
+#nopee funktio jolla voi kattoo löytyykö kannast jotai shittii
+def sqlExists(table:str, row:str, val:str) -> bool:
+    return sqlQuery(f'SELECT EXISTS(SELECT * FROM {table} WHERE {row} = "{val}")', 0)[0]
+
 #Yksinkertainen funktio joka palauttaa haun tietokannasta listana.
 def sqlQuery(query, fetchAll=1):
     kursori.execute(query)
     try: 
         if fetchAll == 1: return kursori.fetchall()
         else: return kursori.fetchone()
-    except mysql.connector.InterfaceError:
+    except:
+        print(Exception) 
         return False
-    except mysql.connector.errors.ProgrammingError:
-        return False
-    except TypeError:
-        return
 
 #Turvallisempi versio query funktiosta jos pelaaja voi suoraan puhua serverille
 def sqlSafeQuery(query, args, fetchAll=1):
@@ -40,9 +41,6 @@ def sqlSafeQuery(query, args, fetchAll=1):
     try:
         if fetchAll == 1: return kursori.fetchall()
         else: return kursori.fetchone()
-    except mysql.connector.InterfaceError:
+    except:
+        print(Exception)
         return False
-    except mysql.connector.errors.ProgrammingError:
-        return False
-    except TypeError:
-        return

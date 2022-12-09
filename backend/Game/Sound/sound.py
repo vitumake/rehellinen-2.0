@@ -1,2 +1,0 @@
-#sound.py
-#jos ehtii :)
