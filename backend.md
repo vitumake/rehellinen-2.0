@@ -5,6 +5,10 @@
 1. [Luokat](#luokat)
    - [Player](#player)
    - [Airport](#airport)
+   - [Country](#country)
+   - [Item](#item)
+   - [Cargo](#cargo-item)
+   - [Plane](#plane-item)
 2. [API](#api)
 
 <br>
