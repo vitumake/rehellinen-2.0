@@ -71,12 +71,12 @@ class Cargo(Item):
         cargo = sqlQuery(f'SELECT * FROM cargo WHERE id= "{cid}"', 1)[0]
         super().__init__(cid, cargo[1], False)
     
-        self.amount = amount
-        self.weight = cargo[2]
-        self.base_risk = cargo[3]
-        self.base_value = cargo[5]        
-        self.volume = cargo[4]
         self.max_qty = cargo[6]
+        self.amount = amount if amount < self.max_qty else self.max_qty
+        self.weight = cargo[2] * amount
+        self.base_risk = cargo[3]
+        self.base_value = cargo[5] * amount      
+        self.volume = cargo[4] * amount
 
 class Country():
     

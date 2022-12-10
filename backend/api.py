@@ -7,8 +7,10 @@ from datetime import datetime
 import hashlib
 import inspect
 from db import sqlSafeQuery
-from classes import Player, Cargo, Plane, Airport, Quest
+from classes import Player, Cargo, Plane, Airport, Quest, Country
 from flask import json, Flask, request, session, redirect, url_for
+
+debug = True
 
 def Response(status:int, content=None):
     if content==None:
@@ -22,6 +24,12 @@ reh = Flask(__name__)
 
 #Secret shh...
 reh.secret_key = b'590172990fb90cfc74f7c0298e436f1934d06b67443005c631d06613abc6f0f2'
+
+#devi funktio
+if debug:
+    @reh.route('/debug')
+    def debug():
+        return Response(200, Country('Fi'))
 
 #Sessions
 @reh.route('/login', methods=['POST'])
@@ -46,6 +54,7 @@ def login():
         else: return Response(400, 'User not found')
     else: return Response(400, 'Already logged in')
 
+        
 @reh.route('/logout')
 def logout():
     if 'uid' in session:
@@ -65,7 +74,7 @@ def user():
     val = request.args.get('val')
     
     #Call specified method if it exists
-    if hasattr(pl, action) and not val==None:
+    if not action== None and hasattr(pl, action) and not val==None:
         val = float(val) if val.lstrip('-+.').isdigit() else 0
         getattr(pl, action)(val)
     #If value is not none print error
