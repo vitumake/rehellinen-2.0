@@ -96,6 +96,7 @@ def load():
 if __name__ == '__main__':
     reh.run(use_reloader=True, host='127.0.0.1', port=3000)
     
-@reh.route('/airport')
-def airport():
-    pass
+@reh.route('/airport/<icao>')
+def airport(icao):
+    action = request.args.get('a')
+    
