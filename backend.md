@@ -10,10 +10,12 @@
    - [Cargo](#cargo-item)
    - [Plane](#plane-item)
 2. [API](#api)
+   - [Login](#login)
+   - [Logout](#logout)
 
 <br>
 
-## Luokat
+## **Luokat**
 
 ### **Tämä on vain python backend koodin dokumentaatio. Rajapinta Ks. [API](#api)**
 
@@ -269,10 +271,42 @@ incItem([Obj](#player))
 
 <br>
 
-## API
+## **API**
 
 ### Kirjautuminen
 
-Kirjautuminen on tehtävä enne kyselyiden lähettämistä. Kirjautuessa API tallentaa selaimeen keksin, jonka avulla se tunnistaa käyttäjän. Keksin voi poistaa kirjautumalla ulos API:sta
+Kirjautuminen on tehtävä ennen kyselyiden lähettämistä. Yhdistettäessä [/login](#login) päätepisteeseen tallentaa flask selaimeen keksin, jonka avulla se tunnistaa käyttäjän. Keksin voi poistaa kirjautumalla ulos API:sta käyttäen [/logout](#logout) päätepistettä.
 
-### /login
+<br>
+
+### **/login**
+
+Login päätepiste ottaa vastaan vain post metodilla lähetettyjä pyyntöjä. 
+
+#### Argumentit
+
+- name *(Pelaajan nimi)*
+- pwd *(Pelaajan salasana)*
+
+#### Esimerkki
+
+```html
+<form action="http://127.0.0.1:3000/login" method="post">
+    <p><input type=text name=name>
+    <p><input type=text name=pwd>   
+    <p><input type=submit value=Login>
+</form>
+```
+
+### **/logout**
+
+Logout ei tarvitse parametreja. Lähetettäessä pyyntö se poistaa automaattisesti pelaajan selaimesta keksin ja täten kirjaa hänet ulos.
+
+#### Esimerkki
+
+```http
+http://127.0.0.1:3000/logout
+```
+
+### **/user**
+
