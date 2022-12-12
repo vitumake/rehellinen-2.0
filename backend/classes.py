@@ -83,21 +83,17 @@ class Airport():
         end=addCoord(begin, (srcSize, srcSize))
         
         airports = sqlQuery(
-            f'SELECT'
+            'SELECT'
             ' ident'
             ' FROM'
             ' airport'
             ' WHERE'
             f' longitude_deg BETWEEN {strt[1]} AND {end[1]}'
             f' AND latitude_deg BETWEEN {strt[0]} AND {end[0]}'
-            ' AND ('
-                ' type = "large_airport"'
-                ' OR type = "medium_airport"'
-            ' )'
+            ' AND type = "large_airport"'
             f' AND ident != "{self.icao}"'
             f' limit {limit}'
         )
-
         return [Airport(i[0]) for i in airports]
     
     def genQuests(self, a:int=3):
