@@ -6,9 +6,11 @@ PYTHONHASHSEED = 0.69
 from datetime import datetime
 import hashlib
 import inspect
-from db import sqlSafeQuery
+from db import sqlSafeQuery, sqlRandRow, sqlQuery
 from classes import Player, Cargo, Plane, Airport, Quest, Country
 from flask import json, Flask, request, session, redirect, url_for
+from flask_cors import CORS
+from misc import findAirports
 
 debug = True
 
@@ -18,9 +20,11 @@ def Response(status:int, content=None):
     return json.dumps({
         'status': status,
         'content': content
-    }, default=lambda a: a.__dict__, sort_keys=True, indent=4)
+    }, default=lambda a: a.__dict__, sort_keys=True, indent=4, ensure_ascii=False).encode('utf-8')
 
 reh = Flask(__name__)
+cors = CORS(reh)
+reh.config['CORS_HEADERS'] = 'Content-Type'
 
 #Secret shh...
 reh.secret_key = b'590172990fb90cfc74f7c0298e436f1934d06b67443005c631d06613abc6f0f2'
@@ -29,7 +33,7 @@ reh.secret_key = b'590172990fb90cfc74f7c0298e436f1934d06b67443005c631d06613abc6f
 if debug:
     @reh.route('/debug')
     def debug():
-        return Response(200, Country('Fi'))
+        return Response(200, Airport('EFHK').findAirports()[0].genQuests())
 
 #Sessions
 @reh.route('/login', methods=['POST'])
@@ -84,5 +88,14 @@ def user():
     #By default user returns player object
     return Response(200, pl)
     
+@reh.route('/load')
+def load():
+    data = sqlQuery('SELECT ident, latitude_deg, longitude_deg FROM airport WHERE type = "large_airport"')
+    return Response(200, data)
+    
 if __name__ == '__main__':
     reh.run(use_reloader=True, host='127.0.0.1', port=3000)
+    
+@reh.route('/airport')
+def airport():
+    pass

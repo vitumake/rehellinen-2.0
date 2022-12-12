@@ -16,22 +16,17 @@ let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 map.addLayer(layer);
 
 const planeIcon = L.icon({
-    iconUrl: 'planecircle.png', //483x707 // circle version 483x500
+    iconUrl: 'map/planecircle.png', //483x707 // circle version 483x500
     iconSize: [16.1, 16.667], // size of the icon  divided by 30 atm
     //iconAnchor: [16.0667,42.667] //241,640 (not with circle) // coordinates of the original image | point of the icon which will correspond to marker's location (bottom of the marker)
     popupAnchor: [-0.5, -17]
 
 })
 
-//Random numero funktio devausvaiheessa markkereiden luontiin.
-function getRandom(min, max) {
-    return Math.random() * (max - min) + min;
-}
-
 // Markkerin luonti + popup ominaisuus
-function addMarker(lat, lng) {
-    let marker = new L.marker([lat, lng], {icon: planeIcon}).addTo(map) //.bindPopup(`Airport name from python `).openPopup();
-    marker.bindPopup(`Airport name from python <br> Click to travel`);
+function addMarker(lat, lng, icao) {
+    let marker = new L.marker([lat, lng], {icon: planeIcon}).addTo(map)
+    marker.bindPopup(`${icao} <br> Airport name from python <br> Click to travel`);
     marker.on('mouseover', function (e) {
         this.openPopup();
     });
@@ -57,16 +52,36 @@ const markers = L.markerClusterGroup({
 
 // Adding the markers to the map and markers locations from clicks to console.
 // Adding markers to marker group
-for (let x = 0; x <= 5000; x++) {
-    const marker = addMarker(getRandom(85, -85), getRandom(-190, 189.9))  //addMarker(airports[x].latitude, airports[x]
+
+fetch('http://127.0.0.1:3000/load')
+  .then((response) => response.json())
+  .then((data) => {
+
+    for (let i of data.content) {
+    const marker = addMarker(i[1], i[2], i[0])  //addMarker(airports[x].latitude, airports[x]
     marker.on('click', function (ev) {
         let latlng = map.mouseEventToLatLng(ev.originalEvent);
         console.log(latlng.lat + ', ' + latlng.lng); // update location
 
     });
     markers.addLayer(marker)
-}
-map.addLayer(markers)
+    }
+    map.addLayer(markers)
+  });
+
+  console.log('load done...')
+
+// for (let x = 0; x <= 5000; x++) {
+//     const marker = addMarker(getRandom(85, -85), getRandom(-190, 189.9))  //addMarker(airports[x].latitude, airports[x]
+
+//     marker.on('click', function (ev) {
+//         let latlng = map.mouseEventToLatLng(ev.originalEvent);
+//         console.log(latlng.lat + ', ' + latlng.lng); // update location
+
+//     });
+//     markers.addLayer(marker)
+// }
+// map.addLayer(markers)
 
 
 // Satellite map

@@ -25,6 +25,11 @@ kursori = conn.cursor(buffered=True)
 def sqlExists(table:str, row:str, val:str) -> bool:
     return sqlQuery(f'SELECT EXISTS(SELECT * FROM {table} WHERE {row} = "{val}")', 0)[0]
 
+#viturandom rivi kannas
+def sqlRandRow(table:str) -> list:
+    return sqlQuery(f'SELECT * FROM {table} ORDER BY RAND() LIMIT 1')[0]
+
+
 #Yksinkertainen funktio joka palauttaa haun tietokannasta listana.
 def sqlQuery(query, fetchAll=1):
     kursori.execute(query)
