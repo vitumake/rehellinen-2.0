@@ -23,9 +23,8 @@ def Response(status:int, content=None):
     }, default=lambda a: a.__dict__, sort_keys=True, indent=4, ensure_ascii=False).encode('utf-8')
 
 reh = Flask(__name__)
-cors = CORS(reh)
+cors = CORS(reh, supports_credentials=True)
 reh.config['CORS_HEADERS'] = 'Content-Type'
-
 #Secret shh...
 reh.secret_key = b'590172990fb90cfc74f7c0298e436f1934d06b67443005c631d06613abc6f0f2'
 
@@ -72,7 +71,7 @@ def logout():
 def user():
     if not 'uid' in session:
         return Response(400, 'Not logged in')
-    
+    print(session['uid'][0][0])
     pl = Player(session['uid'][0][0])
     action = request.args.get('a')
     val = request.args.get('val')
