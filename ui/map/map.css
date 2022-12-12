@@ -1,0 +1,11 @@
+#map{
+    width: 100%;
+    height: 100vh;
+}
+
+path.leaflet-interactive {
+	stroke: crimson;
+	stroke-opacity: 0.8;
+	fill: darkblue;
+	fill-opacity: 0.5;
+}
