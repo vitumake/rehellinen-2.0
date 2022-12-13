@@ -1,5 +1,7 @@
 "use strict";
 
+//Api handling
+
 //Normal get functiom
 async function getAPI(url) {
   const result = await fetch(url, {
@@ -27,6 +29,7 @@ async function postAPI(url = "", data = {}) {
   return response.json();
 }
 
+<<<<<<< HEAD
 async function sleep(seconds) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }
@@ -42,3 +45,20 @@ async function flyImage() {
   await sleep(1);
   image.src = "/ui/images/hangar.jpg";
 }
+=======
+//On cockpit load
+const cockpit = document.querySelector('.cockpit')
+cockpit.addEventListener('load', a=>{
+
+  let svg = cockpit.contentDocument.querySelector('g g')
+  
+  //svg.querySelector('g').addEventListener('mouseover', a=> console.log('touch'))
+
+  const Center_console = svg.querySelector('#Center_Console')
+
+  Center_console.addEventListener('click', a=>{
+  console.log('hello')
+  })
+
+})
+>>>>>>> 980e6a0f186b2551850075da4a6b582e2b69016d

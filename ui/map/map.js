@@ -44,8 +44,10 @@ function updatePlayerPos(){
 // Markkerin luonti + popup ominaisuus
 function addMarker(lat, lng, icao) {
     let marker = new L.marker([lat, lng], {icon: planeIcon}).addTo(map)
-    marker.bindPopup(`${icao} <br> Airport name from python <br> Click to travel`);
+    marker.icao = icao
     marker.on('mouseover', function (e) {
+        getAPI('http://127.0.0.1:3000/user')
+        marker.bindPopup(`${icao}`);
         this.openPopup();
     });
     marker.on('mouseout', function (e) {
@@ -78,29 +80,14 @@ fetch('http://127.0.0.1:3000/load')
     for (let i of data.content) {
     const marker = addMarker(i[1], i[2], i[0])  //addMarker(airports[x].latitude, airports[x]
     marker.on('click', function (ev) {
-        let latlng = map.mouseEventToLatLng(ev.originalEvent);
-        console.log(latlng.lat + ', ' + latlng.lng); // update location
-
+        console.log(marker.icao); // update location
     });
     markers.addLayer(marker)
     }
     map.addLayer(markers)
   });
 
-  console.log('load done...')
-
-// for (let x = 0; x <= 5000; x++) {
-//     const marker = addMarker(getRandom(85, -85), getRandom(-190, 189.9))  //addMarker(airports[x].latitude, airports[x]
-
-//     marker.on('click', function (ev) {
-//         let latlng = map.mouseEventToLatLng(ev.originalEvent);
-//         console.log(latlng.lat + ', ' + latlng.lng); // update location
-
-//     });
-//     markers.addLayer(marker)
-// }
-// map.addLayer(markers)
-
+  console.log('Airports loaded')
 
 // Satellite map
 const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
