@@ -41,13 +41,13 @@ async function flyImage() {
   image.src = "/ui/images/hangarOpen.jpg";
   await sleep(5);
   image.src = "/ui/images/runway.jpg";
-  await sleep(5);
+  await sleep(10);
   image.src = "/ui/images/sky.jpg";
   await sleep(10);
   image.src = "/ui/images/decent.jpg";
-  await sleep(5);
+  await sleep(10);
   image.src = "/ui/images/hangarOut.jpg";
-  await sleep(5);
+  await sleep(10);
   image.src = "/ui/images/hangar.jpg";
 }
 //On cockpit load
