@@ -1,9 +1,16 @@
 'use strict'
+
+
 let mapOptions = {
     center: [50.958, 17],   // KOHTA, mihin map zoomautuu sivun auetessa. pelin tapauksessa lähtökenttä/player location?
     zoom: 13,                    // Kuinka paljon se on zoomautunut tähän kohtaan. (PIDÄ ALUSSA ISONA ZOOMINA JOTTA CLUSTERAUS TOIMII)
 }
 
+let home = {       // players current location:
+    lat: mapOptions.center[0],
+    lng: mapOptions.center[1],
+    zoom: mapOptions.zoom
+  };
 
 const map = new L.map('map', mapOptions);
 
@@ -23,6 +30,17 @@ const planeIcon = L.icon({
 
 })
 
+//Päivitä pelaajan lokaatio
+function updatePlayerPos(){
+    getAPI('http://127.0.0.1:3000/user')
+    .then((data) => {
+        if( data.status == 200){
+            const pos = data.content.location.pos
+            home.lat = pos[0]
+            home.lng = pos[1]
+        }else console.log(data)
+    })
+}
 // Markkerin luonti + popup ominaisuus
 function addMarker(lat, lng, icao) {
     let marker = new L.marker([lat, lng], {icon: planeIcon}).addTo(map)
@@ -163,15 +181,12 @@ const mixed = {
 
 L.control.layers(null, mixed,{collapsed:true}).addTo(map);
 
-
-const home = {       // players current location:
-  lat: mapOptions.center[0],
-  lng: mapOptions.center[1],
-  zoom: mapOptions.zoom
-};
-
     // button to reset view to the players location
-L.easyButton('<img src="locationjpg.jpg" alt="current location">',function(btn,map){
-  map.setView([home.lat, home.lng], home.zoom);
+L.easyButton('<img src="map/locationjpg.jpg" alt="current location">',function(btn,map){
+
+    //Get players updated place
+    updatePlayerPos()
+
+  map.setView([home.lat, home.lng], 8);
 },'Zoom To Current Location').addTo(map);
 

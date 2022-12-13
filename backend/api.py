@@ -6,11 +6,10 @@ PYTHONHASHSEED = 0.69
 from datetime import datetime
 import hashlib
 import inspect
-from db import sqlSafeQuery, sqlRandRow, sqlQuery
-from classes import Player, Cargo, Plane, Airport, Quest, Country
+from db import sqlSafeQuery, sqlQuery, sqlExists
+from classes import Player, Airport
 from flask import json, Flask, request, session, redirect, url_for
 from flask_cors import CORS
-from misc import findAirports
 
 debug = True
 
@@ -23,9 +22,8 @@ def Response(status:int, content=None):
     }, default=lambda a: a.__dict__, sort_keys=True, indent=4, ensure_ascii=False).encode('utf-8')
 
 reh = Flask(__name__)
-cors = CORS(reh)
+cors = CORS(reh, supports_credentials=True)
 reh.config['CORS_HEADERS'] = 'Content-Type'
-
 #Secret shh...
 reh.secret_key = b'590172990fb90cfc74f7c0298e436f1934d06b67443005c631d06613abc6f0f2'
 
@@ -72,7 +70,7 @@ def logout():
 def user():
     if not 'uid' in session:
         return Response(400, 'Not logged in')
-    
+    print(session['uid'][0][0])
     pl = Player(session['uid'][0][0])
     action = request.args.get('a')
     val = request.args.get('val')
@@ -93,9 +91,26 @@ def load():
     data = sqlQuery('SELECT ident, latitude_deg, longitude_deg FROM airport WHERE type = "large_airport"')
     return Response(200, data)
     
+@reh.route('/airport/<icao>')
+def airport(icao:str=None):
+    action = request.args.get('a')
+    val = request.args.get('val')
+    if not sqlExists('airport', 'ident', icao): return Response(400)
+    if action == None:
+        return Response(200, Airport(icao)) 
+    elif action == 'genQuest':
+        return Response(200, Airport(icao).genQuest())
+    elif action == 'genShop':
+        return Response(200, Airport(icao).genShop())
+    elif action == 'dist' and sqlExists('airport', 'ident', val):
+        return Response(200, Airport(icao).dist(Airport(val).pos))
+    return Response(400)
+
+@reh.route('/quest, methods=["POST"]')
+def quests(quest):
+    return Response(200, quest)
+
 if __name__ == '__main__':
     reh.run(use_reloader=True, host='127.0.0.1', port=3000)
     
-@reh.route('/airport')
-def airport():
-    pass
+    
