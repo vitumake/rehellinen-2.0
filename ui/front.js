@@ -71,13 +71,11 @@ function openDialog(element){
   
 }
 
-function openMap(element){
+function openMap(){
   const dialog = document.querySelector('#dialogMap')
-  dialog.appendChild(element)
   dialog.showModal()
   
   dialog.querySelector('span').addEventListener('click', a=>{
     dialog.close()
   })
-  
 }
