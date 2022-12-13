@@ -32,7 +32,7 @@ const planeIcon = L.icon({
 
 //Päivitä pelaajan lokaatio
 function updatePlayerPos(){
-    queryAPI('http://127.0.0.1:3000/user')
+    getAPI('http://127.0.0.1:3000/user')
     .then((data) => {
         if( data.status == 200){
             const pos = data.content.location.pos

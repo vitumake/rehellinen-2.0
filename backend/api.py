@@ -6,11 +6,10 @@ PYTHONHASHSEED = 0.69
 from datetime import datetime
 import hashlib
 import inspect
-from db import sqlSafeQuery, sqlRandRow, sqlQuery, sqlExists
-from classes import Player, Cargo, Plane, Airport, Quest, Country
+from db import sqlSafeQuery, sqlQuery, sqlExists
+from classes import Player, Airport
 from flask import json, Flask, request, session, redirect, url_for
 from flask_cors import CORS
-from misc import findAirports
 
 debug = True
 
@@ -94,7 +93,7 @@ def load():
     
 @reh.route('/airport/<icao>')
 def airport(icao:str=None):
-    action = request.args.get('a')h
+    action = request.args.get('a')
     val = request.args.get('val')
     if not sqlExists('airport', 'ident', icao): return Response(400)
     if action == None:
@@ -107,7 +106,7 @@ def airport(icao:str=None):
         return Response(200, Airport(icao).dist(Airport(val).pos))
     return Response(400)
 
-@reh.route('/quest/<quest>')
+@reh.route('/quest, methods=["POST"]')
 def quests(quest):
     return Response(200, quest)
 
