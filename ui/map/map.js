@@ -32,7 +32,7 @@ const planeIcon = L.icon({
 
 //Päivitä pelaajan lokaatio
 function updatePlayerPos(){
-    getAPI('http://127.0.0.1:3000/user')
+    getAPI('user')
     .then((data) => {
         if( data.status == 200){
             const pos = data.content.location.pos
@@ -41,13 +41,27 @@ function updatePlayerPos(){
         }else console.log(data)
     })
 }
+
+let lastIcao, popMsg
+
 // Markkerin luonti + popup ominaisuus
 function addMarker(lat, lng, icao) {
     let marker = new L.marker([lat, lng], {icon: planeIcon}).addTo(map)
     marker.icao = icao
     marker.on('mouseover', function (e) {
-        getAPI('http://127.0.0.1:3000/user')
-        marker.bindPopup(`${icao}`);
+        if(!lastIcao==icao){
+            console.log('aa')
+            lastIcao = icao
+            getAPI(`airport/${icao}`)
+            .then((data)=>{
+                popMsg=`${data.content.name}<br>Fuelprice: ${data.content.country.fuelprice} €/l<br>`
+            })
+            getPlayer()
+            .then((data)=>{
+                popMsg += data.location.icao == icao?'Current location.':'Click to travel here!'
+            })
+        }
+        marker.bindPopup(popMsg)
         this.openPopup();
     });
     marker.on('mouseout', function (e) {
@@ -80,7 +94,14 @@ fetch('http://127.0.0.1:3000/load')
     for (let i of data.content) {
     const marker = addMarker(i[1], i[2], i[0])  //addMarker(airports[x].latitude, airports[x]
     marker.on('click', function (ev) {
-        console.log(marker.icao); // update location
+        getPlayer()
+        .then((data)=>{
+            console.log('Fly to ' + marker.icao)
+            console.log(data.location.icao==marker.icao)
+            if(data.location.icao!=marker.icao){
+                flyMenu(marker.icao)
+            }
+        }); // update location
     });
     markers.addLayer(marker)
     }

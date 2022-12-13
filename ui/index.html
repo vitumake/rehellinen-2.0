@@ -36,12 +36,11 @@
         
         <dialog id="dialogMap">
           <!-- map-->
-          <span>&#x2715;</span>
+          <span id="close">&#x2715;</span>
           <div id="map"></div>
         </dialog>
 
         <dialog id="menu">
-          <span>&#x2715;</span>
           <!-- menu-->
         </dialog>
         
@@ -52,17 +51,15 @@
           </object>
         </div>
       </div>
-    </div>
+      <!-- frontend -->
+      
+    <script src="front.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+    <script src="map/dist/leaflet.markercluster.js"></script>
+    <!-- map marker clusters-->
+    <!--map zoom to location-->
+    <script src="map/map.js"></script>
+    <!-- map js -->
   </body>
-
-  <!-- frontend -->
-  <script src="front.js"></script>
-
-  <script src="map/dist/leaflet.markercluster.js"></script>
-  <!-- map marker clusters-->
-  <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
-  <!--map zoom to location-->
-  <script src="map/map.js"></script>
-  <!-- map js -->
 
 </html>

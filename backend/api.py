@@ -95,6 +95,7 @@ def load():
 def airport(icao:str=None):
     action = request.args.get('a')
     val = request.args.get('val')
+    print(action, val)
     if not sqlExists('airport', 'ident', icao): return Response(400)
     if action == None:
         return Response(200, Airport(icao)) 
