@@ -28,19 +28,3 @@ async function postAPI(url = '', data = {}) {
   })
   return response.json()
 }
-
-//On cockpit load
-const cockpit = document.querySelector('.cockpit')
-cockpit.addEventListener('load', a=>{
-
-  let svg = cockpit.contentDocument.querySelector('g g')
-  
-  //svg.querySelector('g').addEventListener('mouseover', a=> console.log('touch'))
-
-  const Center_console = svg.querySelector('#Center_Console')
-
-  Center_console.addEventListener('click', a=>{
-  console.log('hello')
-  })
-
-})

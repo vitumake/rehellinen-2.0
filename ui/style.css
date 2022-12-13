@@ -30,7 +30,7 @@ body {
   grid-template-columns: 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr;
 }
-.sky-image {
+.window-image {
   grid-area: sky;
   width: 100%;
   height: 150%;
