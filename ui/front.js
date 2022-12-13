@@ -29,14 +29,8 @@ async function postAPI(url = "", data = {}) {
   return response.json();
 }
 
-<<<<<<< HEAD
-//Graphics :)
-async function sleep(seconds) {
-  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
-=======
 async function sleep(tSeconds) {
   return new Promise((resolve) => setTimeout(resolve, tSeconds * 100));
->>>>>>> 104bc18df7a02e17d5f8839e1d36a55fd344c5cf
 }
 
 async function flyImage() {
