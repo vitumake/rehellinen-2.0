@@ -6,7 +6,7 @@ PYTHONHASHSEED = 0.69
 from datetime import datetime
 import hashlib
 import inspect
-from db import sqlSafeQuery, sqlRandRow, sqlQuery
+from db import sqlSafeQuery, sqlRandRow, sqlQuery, sqlExists
 from classes import Player, Cargo, Plane, Airport, Quest, Country
 from flask import json, Flask, request, session, redirect, url_for
 from flask_cors import CORS
@@ -92,10 +92,26 @@ def load():
     data = sqlQuery('SELECT ident, latitude_deg, longitude_deg FROM airport WHERE type = "large_airport"')
     return Response(200, data)
     
+@reh.route('/airport/<icao>')
+def airport(icao:str=None):
+    action = request.args.get('a')h
+    val = request.args.get('val')
+    if not sqlExists('airport', 'ident', icao): return Response(400)
+    if action == None:
+        return Response(200, Airport(icao)) 
+    elif action == 'genQuest':
+        return Response(200, Airport(icao).genQuest())
+    elif action == 'genShop':
+        return Response(200, Airport(icao).genShop())
+    elif action == 'dist' and sqlExists('airport', 'ident', val):
+        return Response(200, Airport(icao).dist(Airport(val).pos))
+    return Response(400)
+
+@reh.route('/quest/<quest>')
+def quests(quest):
+    return Response(200, quest)
+
 if __name__ == '__main__':
     reh.run(use_reloader=True, host='127.0.0.1', port=3000)
     
-@reh.route('/airport/<icao>')
-def airport(icao):
-    action = request.args.get('a')
     

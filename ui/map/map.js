@@ -37,7 +37,7 @@ function updatePlayerPos(){
         if( data.status == 200){
             const pos = data.content.location.pos
             home.lat = pos[0]
-            home.l = pos[1]
+            home.lng = pos[1]
         }else console.log(data)
     })
 }
@@ -187,6 +187,6 @@ L.easyButton('<img src="map/locationjpg.jpg" alt="current location">',function(b
     //Get players updated place
     updatePlayerPos()
 
-  map.setView([home.lat, home.lng], home.zoom);
+  map.setView([home.lat, home.lng], 8);
 },'Zoom To Current Location').addTo(map);
 

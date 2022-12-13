@@ -71,7 +71,6 @@ class Airport():
         self.type = airport[2]
         self.municipality = airport[10]
         self.country = Country(airport[8])
-        self.shop = [Plane(sqlRandRow('planes')[0]) for i in range(3)]
         
     def dist(self, pos:tuple):
         return distance.geodesic(self.pos, pos).km
@@ -96,8 +95,11 @@ class Airport():
         )
         return [Airport(i[0]) for i in airports]
     
-    def genQuests(self, a:int=3):
-        return [Quest(self) for i in range(a)]
+    def genShop(self):
+        return [Plane(sqlRandRow('planes')[0]) for i in range(3)]
+    
+    def genQuest(self):
+        return Quest(self)
 class Player():
         
     def __init__(self, uid:int) -> None:
