@@ -48,14 +48,15 @@ async function flyImage() {
 const cockpit = document.querySelector('.cockpit')
 cockpit.addEventListener('load', a=>{
 
-  let svg = cockpit.contentDocument.querySelector('g g')
+  const tomtom = cockpit.contentDocument.querySelector('svg g#Tomtom')
+  const svg = cockpit.contentDocument.querySelector('g')
   
   //svg.querySelector('g').addEventListener('mouseover', a=> console.log('touch'))
 
   const Center_console = svg.querySelector('#Center_Console')
 
   Center_console.addEventListener('click', a=>{
-    
+    console.log('airport')
   })
 
 })
