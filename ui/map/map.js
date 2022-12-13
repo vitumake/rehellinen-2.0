@@ -1,43 +1,5 @@
 'use strict'
 
-// Markkerin luonti + popup ominaisuus
-function addMarker(airport) {
-    let marker = new L.marker(airport.pos, {icon: planeIcon}).addTo(map)
-    marker.icao = airport.icao
-    marker.on('mouseover', function (ev){
-        let msg=`${airport.name} [${airport.icao}] <br>Fuelprice: ${airport.country.fuelprice} €/l<br>`
-        airport.icao==currLoc?msg+='Current location':msg+='Click to fly'
-        marker.bindPopup(msg)
-        this.openPopup();
-    })
-    marker.on('mouseout', function (e) {
-        this.closePopup();
-    });
-    return marker
-}
-
-// Adding the markers to the map and markers locations from clicks to console.
-// Adding markers to marker group
-
-fetch('http://127.0.0.1:3000/load')
-  .then((response) => response.json())
-  .then((data) => {
-    for (let i of data.content) {
-        const marker = addMarker(i)  //addMarker(airports[x].latitude, airports[x]
-        marker.on('click', function (ev) {
-            getPlayer()
-            .then((data)=>{
-                if(data.location.icao!=marker.icao){
-                    flyMenu(marker.icao)
-                }
-            }); // update location
-        });
-        markers.addLayer(marker)
-    }
-    map.addLayer(markers)
-  });
-
-  console.log('Airports loaded')
 
 let mapOptions = {
     center: [50.958, 17],   // KOHTA, mihin map zoomautuu sivun auetessa. pelin tapauksessa lähtökenttä/player location?
@@ -82,6 +44,21 @@ function updatePlayerPos(){
 
 let currLoc
 
+// Markkerin luonti + popup ominaisuus
+function addMarker(airport) {
+    let marker = new L.marker(airport.pos, {icon: planeIcon}).addTo(map)
+    marker.icao = airport.icao
+    marker.on('mouseover', function (ev){
+        let msg=`${airport.name} [${airport.icao}] <br>Fuelprice: ${airport.country.fuelprice} €/l<br>`
+        airport.icao==currLoc?msg+='Current location':msg+='Click to fly'
+        marker.bindPopup(msg)
+        this.openPopup();
+    })
+    marker.on('mouseout', function (e) {
+        this.closePopup();
+    });
+    return marker
+}
 
 
 //Marker group properties
@@ -96,6 +73,29 @@ const markers = L.markerClusterGroup({
     chunkedLoading: true
 
 });
+
+// Adding the markers to the map and markers locations from clicks to console.
+// Adding markers to marker group
+
+fetch('http://127.0.0.1:3000/load')
+  .then((response) => response.json())
+  .then((data) => {
+    for (let i of data.content) {
+        const marker = addMarker(i)  //addMarker(airports[x].latitude, airports[x]
+        marker.on('click', function (ev) {
+            getPlayer()
+            .then((data)=>{
+                if(data.location.icao!=marker.icao){
+                    flyMenu(marker.icao)
+                }
+            }); // update location
+        });
+        markers.addLayer(marker)
+    }
+    map.addLayer(markers)
+  });
+  addHandlers()
+  console.log('Airports loaded')
 
 // Satellite map
 const Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {

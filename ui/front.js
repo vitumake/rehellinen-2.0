@@ -1,5 +1,7 @@
 "use strict";
 
+let loaded = false
+
 //Api handling
 
 //Normal get functiom
@@ -59,34 +61,36 @@ function doFly(icao){
 }
 
 //On cockpit load
-const cockpit = document.querySelector('.cockpit')
-cockpit.addEventListener('load', a=>{
+//Define event listeners when maps has finished loading to avoid errors
+function addHandlers(){
+  const cockpit = document.querySelector('.cockpit')
+  cockpit.addEventListener('load', a=>{
 
-  const tomtom = cockpit.contentDocument.querySelector('svg g#Tomtom')
-  const svg = cockpit.contentDocument.querySelector('g')
-  
-  //svg.querySelector('g').addEventListener('mouseover', a=> console.log('touch'))
+    const tomtom = cockpit.contentDocument.querySelector('svg g#Tomtom')
+    const svg = cockpit.contentDocument.querySelector('g')
+    
+    //svg.querySelector('g').addEventListener('mouseover', a=> console.log('touch'))
 
-  const Center_console = svg.querySelector('#Center_Console')
-  const Fuel_Gauge = svg.querySelector('#Fuel_Gauge')
+    const Center_console = svg.querySelector('#Center_Console')
+    const Fuel_Gauge = svg.querySelector('#Fuel_Gauge')
 
-  Center_console.addEventListener('click', a=>{
-    closeAll()
-    getPlayer()
-    .then((data)=>{
-      currLoc = data.location.icao
-      airportMenu(data)
+    Center_console.addEventListener('click', a=>{
+      closeAll()
+      getPlayer()
+      .then((data)=>{
+        currLoc = data.location.icao
+        airportMenu(data)
+      })
     })
-  })
-  
-  //Map button
-  tomtom.addEventListener('click', a=>{
-    closeAll()
-    openMap()
-  })
+    
+    //Map button
+    tomtom.addEventListener('click', a=>{
+      closeAll()
+      openMap()
+    })
 
-})
-
+  })
+}
 //last menu
 let lastMenu
 
