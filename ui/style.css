@@ -4,31 +4,35 @@ body {
 }
 
 .background {
-  background-image: url("/ui/images/wood.jpg");
-  background-color: aqua;
+  background-image: url("/ui/images/window.jpg");
+  background-size: cover;
+  background-color: rgb(232, 255, 255);
   height: 100vh;
   margin: 0;
   padding: 0;
   display: flex;
 }
 
-.grid-container {
-  border-radius: 20px;
-  border-color: black;
-  box-shadow: 2px 2px 5px rgb(0, 0, 0), 10px 10px 15px rgb(0, 0, 0),
-    -1px -1px 30px rgb(0, 0, 0);
 
+
+.grid-container {
+  background-color: rgb(26, 25, 25);
+  border-radius: 20px;
   height: 95vh;
   width: 60vw;
   margin: auto;
   display: grid;
   grid-template-areas:
-    "sky"
-    "sky"
-    "sky"
-    "image";
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 0.5fr;
+    "left top right"
+    "left sky right"
+    "left sky right"
+    "left image right"
+    "left bottom right";
+  grid-template-columns: 2% 1fr 2%;
+  grid-template-rows: 2% 1fr 1fr 1fr 2%;
+
+  border: 5px black solid;
+
 }
 .window-image {
   grid-area: sky;
