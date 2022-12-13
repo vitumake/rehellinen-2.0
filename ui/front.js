@@ -29,19 +29,25 @@ async function postAPI(url = "", data = {}) {
   return response.json();
 }
 
-async function sleep(seconds) {
-  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+async function sleep(tSeconds) {
+  return new Promise((resolve) => setTimeout(resolve, tSeconds * 100));
 }
 
 async function flyImage() {
   let image = document.getElementById("window-image");
 
+  image.src = "/ui/images/hangarOpening.jpg";
+  await sleep(5);
+  image.src = "/ui/images/hangarOpen.jpg";
+  await sleep(5);
   image.src = "/ui/images/runway.jpg";
-  await sleep(1);
+  await sleep(5);
   image.src = "/ui/images/sky.jpg";
-  await sleep(1);
+  await sleep(10);
   image.src = "/ui/images/decent.jpg";
-  await sleep(1);
+  await sleep(5);
+  image.src = "/ui/images/hangarOut.jpg";
+  await sleep(5);
   image.src = "/ui/images/hangar.jpg";
 }
 //On cockpit load
