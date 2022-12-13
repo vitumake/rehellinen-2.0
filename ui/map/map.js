@@ -83,9 +83,11 @@ fetch('http://127.0.0.1:3000/load')
     for (let i of data.content) {
         const marker = addMarker(i)  //addMarker(airports[x].latitude, airports[x]
         marker.on('click', function (ev) {
-            getPlayer()
+            getAPI('user')
             .then((data)=>{
-                if(data.location.icao!=marker.icao){
+                console.log(data.content.location.icao)
+                if(data.content.location.icao!=marker.icao){
+                    console.log(marker.icao)
                     flyMenu(marker.icao)
                 }
             }); // update location

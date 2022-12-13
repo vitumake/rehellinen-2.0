@@ -36,6 +36,7 @@ if debug:
 #Sessions
 @reh.route('/login', methods=['POST'])
 def login():
+    req = request.get_json()
     if not 'uid' in session:
         login = sqlSafeQuery("""
             SELECT
@@ -47,14 +48,14 @@ def login():
             AND
                 pass = %(pwd)s
         """, {
-            'usr': request.form['name'],
-            'pwd': hashlib.sha224(request.form['pwd'].encode('utf-8')).hexdigest()
+            'usr': req['name'],
+            'pwd': hashlib.sha224(req['pwd'].encode('utf-8')).hexdigest()
         }, 1)
         if login:
             session['uid'] = login
-            return redirect(url_for('user'))          
+            return Response(200, 'loggedin')        
         else: return Response(400, 'User not found')
-    else: return Response(400, 'Already logged in')
+    else: return Response(200, 'Already logged in')
 
         
 @reh.route('/logout')
@@ -69,7 +70,7 @@ def logout():
 @reh.route('/user')
 def user():
     if not 'uid' in session:
-        return Response(400, 'Not logged in')
+        return Response(400, 'dologin')
     print(session['uid'][0][0])
     pl = Player(session['uid'][0][0])
     action = request.args.get('a')
@@ -85,7 +86,7 @@ def user():
     
     #Call specified method if it exists
     if not action== None and hasattr(pl, action) and not val==None:
-        val = float(val) if val.lstrip('-+.').isdigit() else 0
+        val = float(val)
         getattr(pl, action)(val)
     #If value is not none print error
     elif not val==None:
@@ -96,6 +97,8 @@ def user():
     
 @reh.route('/load')
 def load():
+    print(session)
+    print('uid' in session)
     data = sqlQuery('SELECT ident FROM airport WHERE type = "large_airport"')
     return Response(200, [Airport(i[0]) for i in data])
     

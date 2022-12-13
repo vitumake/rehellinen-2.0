@@ -7,10 +7,51 @@
     <title>Login to rehellinen</title>
 </head>
 <body>
-    <form action="http://127.0.0.1:3000/login" method="post">
-        <p><input type=text name=name>
-        <p><input type=text name=pwd>   
-        <p><input type=submit value=Login>
+    <form action="" method="post">
+        <p><input type=text name=name id="name">
+        <p><input type=text name=pwd id="pwd">   
+        <p><input type=submit value=Login id="btn"">
+        <p id="alert"></p>
     </form>
+    <script>
+        async function postAPI(url = "", data = {}) {
+            // Default options are marked with *
+            const response = await fetch(`http://127.0.0.1:3000/${url}`, {
+              method: "POST",
+              mode: "cors",
+              cache: "no-cache",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              redirect: "follow",
+              referrerPolicy: "no-referrer",
+              body: JSON.stringify(data),
+            });
+            return response.json();
+          }
+
+          const submit = document.getElementById('btn')
+          const pwd = document.getElementById('pwd')
+          const name = document.getElementById('name')
+          const alert = document.getElementById('alert')
+
+          submit.addEventListener('click', e=>{
+            e.preventDefault()
+            postAPI('login', 
+            {
+                pwd: pwd.value,
+                name: name.value
+            })
+            .then((data)=>{
+                if(data.status==400){
+                    alert.innerHtml=data.content
+                }
+                else{
+                    window.location.replace("./index.html")
+                }
+            })
+          })
+    </script>
 </body>
 </html>

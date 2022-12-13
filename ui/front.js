@@ -1,6 +1,5 @@
 "use strict";
 
-let loaded = false
 
 //Api handling
 
@@ -12,6 +11,15 @@ async function getAPI(url) {
   });
   return result.json();
 }
+
+//Check login
+getAPI('user')
+.then((data)=> {
+  if(data.content=='dologin'){
+    window.location.replace("./login.html")
+}}) 
+
+
 
 //Post function
 async function postAPI(url = "", data = {}) {
@@ -53,18 +61,21 @@ async function flyImage() {
   image.src = "/ui/images/hangar.jpg";
 }
 
-function doFly(icao){
+function doFly(icao, fuelcost){
+  console.log(fuelcost)
   closeAll()
   flyImage()
   .then(a=>{
     console.log(`Flying to ${icao}`)
     getAPI(`user?a=setLocation&val=${icao}`)
+    .then(a=>getAPI(`user?a=incFuel&val=${-fuelcost}`))
   })
 }
 
 //On cockpit load
 //Define event listeners when maps has finished loading to avoid errors
 function addHandlers(){
+
   const cockpit = document.querySelector('.cockpit')
   cockpit.addEventListener('load', a=>{
 
@@ -78,10 +89,10 @@ function addHandlers(){
 
     Center_console.addEventListener('click', a=>{
       closeAll()
-      getPlayer()
+      getAPI('user')
       .then((data)=>{
-        currLoc = data.location.icao
-        airportMenu(data)
+        currLoc = data.content.location.icao
+        airportMenu(data.content)
       })
     })
     
@@ -135,8 +146,8 @@ function closeAll(){
 }
 
 function openMap(){
-  getPlayer()
-  .then((data)=>currLoc=data.location.icao)
+  getAPI('user')
+  .then((data)=>currLoc=data.content.location.icao)
   const dialog = document.querySelector('#dialogMap')
   if(!dialog.open){
     dialog.showModal()
@@ -167,18 +178,17 @@ function flyMenu(icao){
   btn1.innerHTML += 'Fly'
   btn2.innerHTML += 'Cancel'
 
-
   //Promise helvetti
   //Voi tehä nätimmin, muttä tää on nyt tällai. Seuraavis menuis on nätimpi
   getAPI(`airport/${icao}`)
   .then((data)=>{ 
     airport = data.content
     header.innerHTML+=`Fly to ${data.content.name}?`
-    getPlayer()
+    getAPI('user')
     .then((data)=>{
-      player = data
-      p2.innerHTML += `Fuel level: ${Math.round(+data.fuel)} l <br>`
-      getAPI(`/airport/${icao}?a=dist&val=${data.location.icao}`)
+      player = data.content
+      p2.innerHTML += `Fuel level: ${Math.round(+data.content.fuel)} l <br>`
+      getAPI(`/airport/${icao}?a=dist&val=${data.content.location.icao}`)
       .then((data)=>{
         fUsage = data.content
         p2.innerHTML += `Fuel usage: ${Math.round(+data.content)} l`
@@ -188,7 +198,7 @@ function flyMenu(icao){
   
   btn1.addEventListener('click', a=> {
     if(fUsage > player.fuel) alert.innerHTML = 'Not enought fuel!'
-    else doFly(airport.icao)
+    else doFly(airport.icao, fUsage)
   })
   div.appendChild(header)
   div.appendChild(p1)
@@ -253,7 +263,7 @@ function airportMenu(user){
 async function getPlayer(){
   return await getAPI(`user`)
   .then((data)=>{
-    if(data.content=='not logged') return 'loggedout'
+    if(data.content=='not logged') window.location.replace("./login.html");
     return data.content
   })
 }
