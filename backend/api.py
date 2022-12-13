@@ -106,9 +106,13 @@ def airport(icao:str=None):
         return Response(200, Airport(icao).dist(Airport(val).pos))
     return Response(400)
 
-@reh.route('/quest, methods=["POST"]')
-def quests(quest):
-    return Response(200, quest)
+@reh.route('/quest', methods=["POST", "GET"])
+def quests():
+    if request.method == 'POST':
+        req = json.load(request.get_json())
+        return Response(200, req)
+    else:
+        pass
 
 if __name__ == '__main__':
     reh.run(use_reloader=True, host='127.0.0.1', port=3000)
