@@ -29,20 +29,31 @@ async function postAPI(url = "", data = {}) {
   return response.json();
 }
 
+<<<<<<< HEAD
 //Graphics :)
 async function sleep(seconds) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+=======
+async function sleep(tSeconds) {
+  return new Promise((resolve) => setTimeout(resolve, tSeconds * 100));
+>>>>>>> 104bc18df7a02e17d5f8839e1d36a55fd344c5cf
 }
 
 async function flyImage() {
   let image = document.getElementById("window-image");
 
+  image.src = "/ui/images/hangarOpening.jpg";
+  await sleep(5);
+  image.src = "/ui/images/hangarOpen.jpg";
+  await sleep(5);
   image.src = "/ui/images/runway.jpg";
-  await sleep(1);
+  await sleep(10);
   image.src = "/ui/images/sky.jpg";
-  await sleep(1);
+  await sleep(10);
   image.src = "/ui/images/decent.jpg";
-  await sleep(1);
+  await sleep(10);
+  image.src = "/ui/images/hangarOut.jpg";
+  await sleep(10);
   image.src = "/ui/images/hangar.jpg";
 }
 
