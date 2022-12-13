@@ -55,7 +55,7 @@ cockpit.addEventListener('load', a=>{
   const Center_console = svg.querySelector('#Center_Console')
 
   Center_console.addEventListener('click', a=>{
-  console.log('hello')
+    
   })
 
 })
