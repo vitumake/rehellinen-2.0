@@ -34,25 +34,32 @@
     <div class="background">
       <div class="grid-container">
         
+<<<<<<< HEAD
         <img src="/ui/images/hangar.jpg" alt="image" class="window-image" id="window-image">
+=======
+        <dialog id="dialog">
+          <!-- map-->
+        </dialog>
+
+        <img src="/ui/images/sky.jpg" alt="sky-image" class="sky-image" id="sky-image">
+>>>>>>> c3a6da550711a76887f9d39d746783dccb879a38
         <div class="player-view">
-          <img
-            src="/ui/images/Cessna_cockpit.svg"
-            alt="cockpit"
-            class="cockpit"
-          />
-        </div>
-        <!--div class="map-container">
-          <div id="map">
-            <script src="map/dist/leaflet.markercluster.js"></script>
-            <!-- map marker clusters-->
-            <!--script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
-            <!-- map zoom to location-->
-            <!--script src="map/map.js"></script>
-            <!-- map js-->
-          </div>
+          <object data="/ui/images/Cessna_cockpit.svg" type="image/svg+xml"
+            class="cockpit">
+          </object>
         </div>
       </div>
     </div>
   </body>
+
+  <!-- frontend -->
+  <script src="front.js"></script>
+
+  <script src="map/dist/leaflet.markercluster.js"></script>
+  <!-- map marker clusters-->
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
+  <!--map zoom to location-->
+  <script src="map/map.js"></script>
+  <!-- map js -->
+
 </html>
