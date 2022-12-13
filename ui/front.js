@@ -26,3 +26,11 @@ async function postAPI(url = '', data = {}) {
   })
   return response.json()
 }
+
+function flyImage() {
+  let image = document.getElementById("window-image")
+
+  image.src = '/ui/images/runway.jpg'
+  image.src = '/ui/images/sky.jpg'
+  image.src = '/ui/images/decent.jpg'
+}
