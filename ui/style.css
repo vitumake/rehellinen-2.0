@@ -19,7 +19,7 @@ body {
     -1px -1px 30px rgb(0, 0, 0);
 
   height: 95vh;
-  width: 80vw;
+  width: 60vw;
   margin: auto;
   display: grid;
   grid-template-areas:
@@ -28,12 +28,13 @@ body {
     "sky"
     "image";
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 0.5fr;
 }
 .window-image {
   grid-area: sky;
   width: 100%;
-  height: 200%;
+  height: 150%;
+  overflow:visible;
 }
 
 .player-view {
