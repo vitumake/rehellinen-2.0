@@ -54,9 +54,11 @@ async function flyImage() {
 }
 
 function doFly(icao){
+  closeAll()
   flyImage()
   .then(a=>{
-    getAPI(`user/?a=setLocation&val=${a}`)
+    console.log(`Flying to ${icao}`)
+    getAPI(`user?a=setLocation&val=${icao}`)
   })
 }
 
