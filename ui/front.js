@@ -59,3 +59,25 @@ cockpit.addEventListener('load', a=>{
   })
 
 })
+
+function openDialog(element){
+  const dialog = document.querySelector('#menu')
+  dialog.appendChild(element)
+  dialog.showModal()
+  
+  dialog.querySelector('span').addEventListener('click', a=>{
+    dialog.close()
+  })
+  
+}
+
+function openMap(element){
+  const dialog = document.querySelector('#dialogMap')
+  dialog.appendChild(element)
+  dialog.showModal()
+  
+  dialog.querySelector('span').addEventListener('click', a=>{
+    dialog.close()
+  })
+  
+}
