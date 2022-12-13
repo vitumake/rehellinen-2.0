@@ -62,3 +62,7 @@ dialog{
   width: 60%;
   height: 60%;
 }
+
+dialog #left{
+  color: red;
+}

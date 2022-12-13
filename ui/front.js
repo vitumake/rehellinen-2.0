@@ -51,6 +51,13 @@ async function flyImage() {
   image.src = "/ui/images/hangar.jpg";
 }
 
+function doFly(icao){
+  flyImage()
+  .then(a=>{
+    getAPI(`user/?a=setLocation&val=${a}`)
+  })
+}
+
 //On cockpit load
 const cockpit = document.querySelector('.cockpit')
 cockpit.addEventListener('load', a=>{
@@ -61,11 +68,15 @@ cockpit.addEventListener('load', a=>{
   //svg.querySelector('g').addEventListener('mouseover', a=> console.log('touch'))
 
   const Center_console = svg.querySelector('#Center_Console')
+  const Fuel_Gauge = svg.querySelector('#Fuel_Gauge')
 
   Center_console.addEventListener('click', a=>{
     closeAll()
     getPlayer()
-    .then((data)=>airportMenu(data))
+    .then((data)=>{
+      currLoc = data.location.icao
+      airportMenu(data)
+    })
   })
   
   //Map button
@@ -118,6 +129,8 @@ function closeAll(){
 }
 
 function openMap(){
+  getPlayer()
+  .then((data)=>currLoc=data.location.icao)
   const dialog = document.querySelector('#dialogMap')
   if(!dialog.open){
     dialog.showModal()
@@ -184,6 +197,7 @@ function airportMenu(user){
   const div = document.createElement('div')
   const header = document.createElement('h1')
   const info = document.createElement('div')
+  info.id = 'left'
   const quest = document.createElement('div')
   const btnDiv = document.createElement('div')
   const btn1 = document.createElement('button')

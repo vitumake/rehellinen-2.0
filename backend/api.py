@@ -74,6 +74,14 @@ def user():
     pl = Player(session['uid'][0][0])
     action = request.args.get('a')
     val = request.args.get('val')
+    print(action, val)
+    
+    #Check methods that cant be called with just values
+    if(action=='setLocation'and sqlExists('airport', 'ident', val) and not val==None):
+        pl.setLocation(Airport(val))
+        return Response(200, pl) 
+    elif action=='setLocation':
+     return Response(400)
     
     #Call specified method if it exists
     if not action== None and hasattr(pl, action) and not val==None:
@@ -88,8 +96,8 @@ def user():
     
 @reh.route('/load')
 def load():
-    data = sqlQuery('SELECT ident, latitude_deg, longitude_deg FROM airport WHERE type = "large_airport"')
-    return Response(200, data)
+    data = sqlQuery('SELECT ident FROM airport WHERE type = "large_airport"')
+    return Response(200, [Airport(i[0]) for i in data])
     
 @reh.route('/airport/<icao>')
 def airport(icao:str=None):
