@@ -217,6 +217,7 @@ function airportMenu(user){
   const quest = document.createElement('div')
   const btnDiv = document.createElement('div')
   const btn1 = document.createElement('button')
+  btn1.innerHTML = 'Fuel depot'
   const btn2 = document.createElement('button')
   const alert = document.createElement('p')
 
@@ -252,10 +253,69 @@ function airportMenu(user){
     }
   }
 
+  
   div.appendChild(header)
   div.appendChild(info)
   div.appendChild(quest)
+  btnDiv.appendChild(btn1)
+  div.appendChild(btnDiv)
+  
+  btn1.addEventListener('click', e=>{
+    fuelMenu(user)
+  })
 
+  openDialog(div)
+}
+
+function fuelMenu(user){
+  const div = document.createElement('div')
+  const header = document.createElement('h1')
+  const info = document.createElement('div')
+  info.id = 'left'
+  const quest = document.createElement('div')
+  const btnDiv = document.createElement('div')
+  const alert = document.createElement('p')
+  alert.id='alert'
+  const form = document.createElement('form')
+  const btn1 = document.createElement('button')
+  btn1.innerHTML = 'Refuel'
+  const input = document.createElement('input')
+  input.type = 'text'
+  form.appendChild(btn1)
+  form.appendChild(input)
+
+
+  header.innerHTML = `Welcome to the ${user.location.name} fuel depot.`
+  for(let i=0; i<4; i++){
+    const row = document.createElement('p')
+    switch(i){
+      case 1:
+        row.innerHTML = `Money: ${user.money} €`
+        break;
+      case 2:
+        row.innerHTML = `Fuel: ${user.fuel}/${user.plane.max_fuel} l`
+        break;
+      case 3:
+        row.innerHTML = `Fuelprice: ${user.location.country.fuelprice}`
+        break;
+    }
+    row.innerHTML += '<br>'
+    info.appendChild(row)
+  }
+
+  btn1.addEventListener('click', a=>{
+    fuelAmount = input.value
+    console.log(fuelAmount)
+  })
+
+
+  div.appendChild(header)
+  div.appendChild(info)
+  btnDiv.appendChild(btn1)
+  div.appendChild(btnDiv)
+  div.appendChild(alert)
+
+  closeAll()
   openDialog(div)
 }
 
