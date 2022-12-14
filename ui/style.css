@@ -1,3 +1,12 @@
+@font-face {
+  font-family: 'Bungee-Regular';
+  src: url('/ui/Bungee-Regular.ttf');
+}
+
+* {
+  font-family: 'Bungee-Regular',Verdana, Geneva, Tahoma, sans-serif;
+}
+
 body {
   padding: 0;
   margin: 0;
