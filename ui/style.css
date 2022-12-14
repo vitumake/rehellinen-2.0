@@ -66,3 +66,38 @@ dialog{
 dialog #left{
   color: red;
 }
+
+#dialogMap {
+  width: 60%;
+  height: 60%;
+  display: flexbox;
+  flex-direction: column;
+  -ms-flex-align: center;
+  border: 30px solid rgb(0, 0, 0);
+  border-radius: 20px;
+  background-color: rgb(88, 88, 88);
+}
+
+#dialogMap div#map {
+  
+  display: block;
+  padding: 5px;
+  width: 98%;
+  height: 92%;
+  margin: auto;
+  border-radius: 10px;
+  border: 2px rgb(0, 0, 0) solid;
+}
+
+#dialogMap span#close {
+  display: block;
+  color: white;
+  padding: 5px;
+  width: 20px;
+ margin-right: auto;
+}
+
+#dialogMap span#close:hover {
+ color: rgb(255, 0, 0);
+ 
+}
