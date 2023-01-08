@@ -1,3 +1,12 @@
+@font-face {
+  font-family: 'Bungee-Regular';
+  src: url('/ui/Bungee-Regular.ttf');
+}
+
+* {
+  font-family: 'Bungee-Regular',Verdana, Geneva, Tahoma, sans-serif;
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -83,7 +92,7 @@ dialog #left{
   display: block;
   padding: 5px;
   width: 98%;
-  height: 92%;
+  height: 90%;
   margin: auto;
   border-radius: 10px;
   border: 2px rgb(0, 0, 0) solid;
@@ -92,7 +101,8 @@ dialog #left{
 #dialogMap span#close {
   display: block;
   color: white;
-  padding: 5px;
+  padding: 0;
+  
   width: 20px;
  margin-right: auto;
 }
