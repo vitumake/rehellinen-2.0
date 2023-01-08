@@ -1,8 +1,7 @@
 "use strict";
 
 
-//Api handling
-
+//Loading blur
 //Normal get functiom
 async function getAPI(url) {
   const result = await fetch(`http://127.0.0.1:3000/${url}`, {
@@ -23,7 +22,7 @@ getAPI('user')
     window.location.replace("./login.html")
   }else{
     user = data.content
-    console.log(user)
+    console.log(user.name + ' has logged in')
   } 
 }) 
 
@@ -89,8 +88,6 @@ function addHandlers(){
   console.log('Adding handlers...')
 
   const cockpit = document.querySelector('.cockpit')
-  console.log(cockpit)
-  console.log('Svg loaded...')
   const tomtom = cockpit.contentDocument.querySelector('svg g#Tomtom')
   const svg = cockpit.contentDocument.querySelector('g')
   
@@ -101,11 +98,8 @@ function addHandlers(){
 
   Center_console.addEventListener('click', a=>{
     closeAll()
-    getAPI('user')
-    .then((data)=>{
-      currLoc = data.content.location.icao
-      airportMenu(data.content)
-    })
+    currLoc = user.location.icao
+    airportMenu(user)
   })
   
   //Map button
@@ -115,6 +109,7 @@ function addHandlers(){
   })
 
   console.log('Handlers loaded!')
+  document.getElementById('isLoading').setAttribute('id', null)
 }
 //last menu
 let lastMenu
@@ -158,8 +153,7 @@ function closeAll(){
 }
 
 function openMap(){
-  getAPI('user')
-  .then((data)=>currLoc=data.content.location.icao)
+  currLoc=user.location.icao
   const dialog = document.querySelector('#dialogMap')
   if(!dialog.open){
     dialog.showModal()
@@ -286,14 +280,38 @@ function fuelMenu(user){
   const alert = document.createElement('p')
   alert.id='alert'
   const form = document.createElement('form')
+  const refuelA = document.createElement('p')
+  const cost = document.createElement('p')
+  const amount = document.createElement('p')
+  const full = document.createElement('p')
+  full.innerHTML = 'Fully fueled'
+
+  amount.innerHTML = 'Fuel: 0l'
+  cost.innerHTML = 'Cost: 0€'
+
+  full.innerHTML = 'Tank full'
+  refuelA.innerHTML = 'Refuel'
+  
+  //Refuel slider
   const slider = document.createElement('input')
+  slider.type = 'range'
+  slider.min = 1
+  slider.max = +user.plane.max_fuel - +user.fuel
+  console.log(user.fuel + '-' + (user.plane.max_fuel - user.fuel))
+
+  slider.oninput = function(){
+    amount.innerHTML = 'Fuel: ' + this.value + 'l'
+    cost.innerHTML = 'Cost: ' + (this.value * user.location.country.fuelprice).toFixed(2) + '€'
+  }
+
   const btn1 = document.createElement('button')
   btn1.innerHTML = 'Refuel'
-  const input = document.createElement('input')
-  input.type = 'text'
-  form.appendChild(btn1)
-  form.appendChild(input)
+  
+  form.appendChild(refuelA)
+  form.appendChild(cost)
+  form.appendChild(amount)
   form.appendChild(slider)
+  form.appendChild(btn1)
 
 
   header.innerHTML = `Welcome to the ${user.location.name} fuel depot.`
@@ -307,34 +325,45 @@ function fuelMenu(user){
         row.innerHTML = `Fuel: ${user.fuel}/${user.plane.max_fuel} l`
         break;
       case 3:
-        row.innerHTML = `Fuelprice: ${user.location.country.fuelprice}`
+        row.innerHTML = `Fuelprice: ${user.location.country.fuelprice} €/l`
         break;
     }
     row.innerHTML += '<br>'
     info.appendChild(row)
   }
 
-  btn1.addEventListener('click', a=>{
-    fuelAmount = input.value
-    console.log(fuelAmount)
+  form.addEventListener('submit', a=>{
+    a.preventDefault()
+    let fuelAmount = slider.value
+    let costA = fuelAmount * user.location.country.fuelprice
+    if(user.money > costA){
+      getAPI(`user?a=incFuel&val=${+fuelAmount}`)
+      .then(a=>{
+        user.fuel += +fuelAmount
+        getAPI(`user?a=incMoney&val=${-costA}`)
+        .then(a=>{
+          user.money -= costA
+        })
+        closeAll()
+        document.querySelector('#menu').innerHTML = ''
+        fuelMenu(user)
+      })
+      
+    }else{
+      alert.innerHTML = 'Ei tarpeeksi rahaa!'
+    }
   })
 
 
   div.appendChild(header)
   div.appendChild(info)
-  btnDiv.appendChild(btn1)
+
+  if(user.fuel >= user.plane.max_fuel) btnDiv.appendChild(full)
+  else btnDiv.appendChild(form)
+  
   div.appendChild(btnDiv)
   div.appendChild(alert)
 
   closeAll()
   openDialog(div)
-}
-
-//Get objects that are used many times
-async function getPlayer(){
-  return await getAPI(`user`)
-  .then((data)=>{
-    if(data.content=='not logged') window.location.replace("./login.html");
-    return data.content
-  })
 }

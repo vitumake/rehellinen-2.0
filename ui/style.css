@@ -111,3 +111,11 @@ dialog #left{
  color: rgb(255, 0, 0);
  
 }
+
+#isLoading {
+  filter: blur(5px);
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+}
