@@ -286,12 +286,14 @@ function fuelMenu(user){
   const alert = document.createElement('p')
   alert.id='alert'
   const form = document.createElement('form')
+  const slider = document.createElement('input')
   const btn1 = document.createElement('button')
   btn1.innerHTML = 'Refuel'
   const input = document.createElement('input')
   input.type = 'text'
   form.appendChild(btn1)
   form.appendChild(input)
+  form.appendChild(slider)
 
 
   header.innerHTML = `Welcome to the ${user.location.name} fuel depot.`
