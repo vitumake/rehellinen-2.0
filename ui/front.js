@@ -76,7 +76,7 @@ function doFly(icao, fuelcost){
     .then(a=>getAPI(`user?a=incFuel&val=${-fuelcost}`))
     .then(a=>{
       getAPI('user')
-      .then(a=>{user = a})
+      .then((a)=>{user = a.content})
     })
   })
 }
