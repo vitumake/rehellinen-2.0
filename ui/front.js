@@ -12,14 +12,20 @@ async function getAPI(url) {
   return result.json();
 }
 
+//User global to avoid having to spam api calls.
+//The user api call is very heavy on the sql server so it should be avoided when possible
+let user
+
 //Check login
 getAPI('user')
 .then((data)=> {
   if(data.content=='dologin'){
     window.location.replace("./login.html")
-}}) 
-
-
+  }else{
+    user = data.content
+    console.log(user)
+  } 
+}) 
 
 //Post function
 async function postAPI(url = "", data = {}) {
@@ -69,40 +75,46 @@ function doFly(icao, fuelcost){
     console.log(`Flying to ${icao}`)
     getAPI(`user?a=setLocation&val=${icao}`)
     .then(a=>getAPI(`user?a=incFuel&val=${-fuelcost}`))
+    .then(a=>{
+      getAPI('user')
+      .then(a=>{user = a})
+    })
   })
 }
 
 //On cockpit load
-//Define event listeners when maps has finished loading to avoid errors
+//Define event listeners when map has finished loading to avoid errors
 function addHandlers(){
 
+  console.log('Adding handlers...')
+
   const cockpit = document.querySelector('.cockpit')
-  cockpit.addEventListener('load', a=>{
+  console.log(cockpit)
+  console.log('Svg loaded...')
+  const tomtom = cockpit.contentDocument.querySelector('svg g#Tomtom')
+  const svg = cockpit.contentDocument.querySelector('g')
+  
+  //svg.querySelector('g').addEventListener('mouseover', a=> console.log('touch'))
 
-    const tomtom = cockpit.contentDocument.querySelector('svg g#Tomtom')
-    const svg = cockpit.contentDocument.querySelector('g')
-    
-    //svg.querySelector('g').addEventListener('mouseover', a=> console.log('touch'))
+  const Center_console = svg.querySelector('#Center_Console')
+  const Fuel_Gauge = svg.querySelector('#Fuel_Gauge')
 
-    const Center_console = svg.querySelector('#Center_Console')
-    const Fuel_Gauge = svg.querySelector('#Fuel_Gauge')
-
-    Center_console.addEventListener('click', a=>{
-      closeAll()
-      getAPI('user')
-      .then((data)=>{
-        currLoc = data.content.location.icao
-        airportMenu(data.content)
-      })
+  Center_console.addEventListener('click', a=>{
+    closeAll()
+    getAPI('user')
+    .then((data)=>{
+      currLoc = data.content.location.icao
+      airportMenu(data.content)
     })
-    
-    //Map button
-    tomtom.addEventListener('click', a=>{
-      closeAll()
-      openMap()
-    })
-
   })
+  
+  //Map button
+  tomtom.addEventListener('click', a=>{
+    closeAll()
+    openMap()
+  })
+
+  console.log('Handlers loaded!')
 }
 //last menu
 let lastMenu
@@ -184,15 +196,12 @@ function flyMenu(icao){
   .then((data)=>{ 
     airport = data.content
     header.innerHTML+=`Fly to ${data.content.name}?`
-    getAPI('user')
+    player = user
+    p2.innerHTML += `Fuel level: ${Math.round(+user.fuel)} l <br>`
+    getAPI(`/airport/${icao}?a=dist&val=${user.location.icao}`)
     .then((data)=>{
-      player = data.content
-      p2.innerHTML += `Fuel level: ${Math.round(+data.content.fuel)} l <br>`
-      getAPI(`/airport/${icao}?a=dist&val=${data.content.location.icao}`)
-      .then((data)=>{
-        fUsage = data.content
-        p2.innerHTML += `Fuel usage: ${Math.round(+data.content)} l`
-      })
+      fUsage = data.content
+      p2.innerHTML += `Fuel usage: ${Math.round(+data.content)} l`
     })
   })
   
@@ -327,4 +336,3 @@ async function getPlayer(){
     return data.content
   })
 }
-

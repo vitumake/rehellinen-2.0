@@ -16,10 +16,13 @@ debug = True
 def Response(status:int, content=None):
     if content==None:
         if status==400: content='Bad request'
-    return json.dumps({
+    resp = json.dumps({
         'status': status,
         'content': content
     }, default=lambda a: a.__dict__, sort_keys=True, indent=4, ensure_ascii=False).encode('utf-8')
+    #debug
+    #print(f'Returning request: \n\n{resp}')
+    return resp
 
 reh = Flask(__name__)
 cors = CORS(reh, supports_credentials=True)
@@ -99,8 +102,19 @@ def user():
 def load():
     print(session)
     print('uid' in session)
-    data = sqlQuery('SELECT ident FROM airport WHERE type = "large_airport"')
-    return Response(200, [Airport(i[0]) for i in data])
+    airport = sqlQuery('SELECT * FROM airport WHERE type = "large_airport"')
+    return Response(200, [
+        #Very nice python very readable code
+        {
+        'icao': i[1],
+        'name': i[3],
+        'pos': (i[4], i[5]),
+        'iso': i[8],
+        'fuelprice': sqlQuery(f'SELECT fuelprice FROM country WHERE iso_country = "{i[8]}"', 0)[0]
+        }
+        
+        for i in airport
+    ])
     
 @reh.route('/airport/<icao>')
 def airport(icao:str=None):
