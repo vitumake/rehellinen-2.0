@@ -121,17 +121,3 @@ WIN: pelaaja saavuttaa tavoite määrän rahaa <br> LOSE: pelaajalta loppuu raha
 # MySql database
 
 ![MySql diagrammi](https://leopard.hosting.pecon.us/dl/jmkqp/kuva_2022-10-13_183906758.png)
-
-# MySql database salasana tiedosto
-Tietokanta ylläpidetään nykyään servervillä joten tähän ei tarvitse kiinnittää huommiota.
-<br>
-~~Kaikkilla on oma salasana mysql tietokantaan joten elämän helpottamiseksi jokaisella on myös oma "pass.txt"~~
-
-### Ohje "pass.txt" tiedoston luomiseen
-1. Tee tiedosto nimeltä "pass.txt" ylipään kansioon
-2. Ensimmäiselle riville kirjoitat tietokannan nimen esim. "lentopeli"
-3. Toiselle riville kirjoitat tietokannan salasanan
-
-### Esimerkki pass.txt tiedoston sisällöstä
-	lentopeli
-	salasana1234
