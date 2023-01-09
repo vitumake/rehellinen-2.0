@@ -16,7 +16,8 @@ Kauppisen Pete omistaa firman. Petellä on paljon velkaa. Peten pitää kerätä
 ## Muutoksia esityksestä
 - Tietokanta bugi korjattu
 - Käyttöliittymä suoraviivaisempi ja nopeampi
-- pää mekaniikat kunnossa
+- Pää mekaniikat kunnossa
+- Kirjautuminen testiä varten tunnuksilla: make  salasana: pwd
 
 # Sisällys
 - [rehellinen-lentorahti-ky](#rehellinen-lentorahti-ky)
