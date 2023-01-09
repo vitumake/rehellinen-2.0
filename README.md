@@ -307,3 +307,6 @@ WIN: pelaaja saavuttaa tavoite määrän rahaa <br> LOSE: pelaajalta loppuu raha
 	/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 	/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
 ```
+
+# Kuvakaappauksia pelistä:
+![kuva](https://user-images.githubusercontent.com/111982153/211268728-924cf452-9ace-4d88-9870-035a0b245d22.png)
