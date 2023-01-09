@@ -309,4 +309,16 @@ WIN: pelaaja saavuttaa tavoite määrän rahaa <br> LOSE: pelaajalta loppuu raha
 ```
 
 # Kuvakaappauksia pelistä:
+Päänäkymä
 ![kuva](https://user-images.githubusercontent.com/111982153/211268728-924cf452-9ace-4d88-9870-035a0b245d22.png)
+
+Karttanäkymä
+![kuva](https://user-images.githubusercontent.com/111982153/211269080-ff8b3e6a-6bc6-4596-8e06-188782a64781.png)
+
+Tankkaus
+![kuva](https://user-images.githubusercontent.com/111982153/211269193-2f38d0e1-c08f-4106-8a11-778806d340bd.png)
+![kuva](https://user-images.githubusercontent.com/111982153/211269350-55c359a3-2173-4fb4-9e21-11573c9b6045.png)
+
+
+
+
